@@ -1,0 +1,28 @@
+## Ignore build artifacts
+bin/
+obj/
+*.dll
+*.exe
+*.pdb
+
+## Ignore Visual Studio temporary files
+.vs/
+*.user
+*.suo
+*.cache
+*.tmp
+
+## Ignore package restore
+packages/
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+## Ignore OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
