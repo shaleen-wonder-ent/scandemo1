@@ -1,5 +1,6 @@
 using System;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
+using System.Text.RegularExpressions;
 
 namespace AzureConsoleApp.AzureSQL
 {
@@ -23,9 +24,26 @@ namespace AzureConsoleApp.AzureSQL
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"An error occurred while connecting to Azure SQL Database: {ex.Message}");
+                    Console.WriteLine($"An error occurred while connecting to Azure SQL Database: {MaskSensitiveInfo(ex.Message)}");
                 }
             }
+        }
+
+        private static string MaskSensitiveInfo(string message)
+        {
+            if (string.IsNullOrEmpty(message))
+                return message;
+
+            // Mask password patterns in connection strings
+            var maskedMessage = Regex.Replace(message, @"(password|pwd)\s*=\s*[^;]+", "$1=***", RegexOptions.IgnoreCase);
+            
+            // Mask user ID patterns
+            maskedMessage = Regex.Replace(maskedMessage, @"(user\s*id|uid)\s*=\s*[^;]+", "$1=***", RegexOptions.IgnoreCase);
+            
+            // Mask authentication credentials
+            maskedMessage = Regex.Replace(maskedMessage, @"(authentication)\s*=\s*[^;]+", "$1=***", RegexOptions.IgnoreCase);
+            
+            return maskedMessage;
         }
     }
 }
